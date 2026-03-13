@@ -1,4 +1,28 @@
+import { useState, useEffect } from 'react';
+
+function formatDateTime(date) {
+  const options = {
+    month: 'short',
+    day: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: true,
+  };
+  return date.toLocaleString('en-IN', options);
+}
+
 export default function Footer() {
+  const [currentTime, setCurrentTime] = useState(() => new Date());
+
+  useEffect(() => {
+    const timer = setInterval(() => setCurrentTime(new Date()), 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const currentYear = currentTime.getFullYear();
+
   const logos = [
     { label: 'data.gov.in', sub: 'Open Government Data (OGD) Platform India' },
     { label: 'india.gov.in', sub: 'The national portal of India' },
@@ -61,7 +85,7 @@ export default function Footer() {
           India
         </p>
         <p className="copyright">
-          © 2026 - The Registrar General & Census Commissioner, India - Ⓒ Mar 13, 2026, 10:34:23 PM
+          © {currentYear} - The Registrar General & Census Commissioner, India - Ⓒ {formatDateTime(currentTime)}
         </p>
       </div>
     </footer>
